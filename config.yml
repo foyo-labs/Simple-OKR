@@ -1,0 +1,9 @@
+http:
+  port: ":8080"
+postgres:
+  host: "192.168.0.132"
+  port: 5432
+  user: "okre"
+  password: "okre"
+  name: "okre"
+  ssl: "disable"  
