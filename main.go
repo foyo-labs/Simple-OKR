@@ -12,7 +12,7 @@ import (
 	"github.com/laidingqing/sokr/internal/db"
 )
 
-//go:embed ui/build/*
+//go:embed web/build/*
 var content embed.FS
 
 func main() {
@@ -38,16 +38,22 @@ func main() {
 
 	objectiveAPI := app.InitObjectiveAPI(database)
 	userAPI := app.InitUserAPI(database)
+	unitAPI := app.InitUnitAPI(database)
 
 	api := r.Group("/api")
 	objectives := api.Group("/objectives")
 	users := api.Group("/users")
+	units := api.Group("/units")
 
 	// Objectives
 	objectives.GET("", objectiveAPI.GetAll)
 
 	// Users
 	users.POST("/login", userAPI.Login)
+	users.POST("/registion", userAPI.Create)
+
+	// Units: Company & Department
+	units.POST("/companies", unitAPI.CreateCompany)
 
 	err := r.Run(config.C.Http.Port)
 	if err != nil {

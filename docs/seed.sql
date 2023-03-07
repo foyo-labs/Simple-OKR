@@ -1,0 +1,3 @@
+-- Init Data
+-- users
+-- INSERT INTO USERS(ID, EMAIL, PASSWORD, NAME, STATUS, ROLE, CREATED) VALUES('', '37505218@qq.com', '')

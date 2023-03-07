@@ -13,12 +13,14 @@ func GetUserDB(ctx context.Context, defDB *gorm.DB) *gorm.DB {
 }
 
 type User struct {
-	ID       int32  `gorm:"column:id;not null;primaryKey"`
-	Email    string `gorm:"column:email;not null"`
-	Password string `gorm:"column:password;not null"`
-	Name     string `gorm:"column:name;"`
-	Status   int    `gorm:"column:status;index;default:0;not null;"` // 状态(1:启用 2:停用)
-	Created  uint64 `gorm:"column:created;not null"`
+	ID           string      `gorm:"column:id;not null;primaryKey"`
+	Email        string      `gorm:"column:email;not null"`
+	Password     string      `gorm:"column:password;not null"`
+	Name         string      `gorm:"column:name;"`
+	Status       int         `gorm:"column:status;index;default:0;not null;"` // 状态(1:启用 2:停用)
+	Role         schema.Role `gorm:"column:role;default:1;"`                  //角色, 0
+	DepartmentID string      `gorm:"column:department_id;"`                   //部门编号
+	Created      uint64      `gorm:"column:created;not null"`
 }
 
 // ToSchemaUser 转换为用户对象

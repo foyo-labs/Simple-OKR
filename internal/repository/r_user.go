@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"time"
 
 	"github.com/laidingqing/sokr/internal/entity"
 	"github.com/laidingqing/sokr/internal/schema"
@@ -28,6 +29,7 @@ func NewUserRepository(dbConn *gorm.DB) IUserRepository {
 
 func (a *UserRepository) Create(ctx context.Context, item schema.User) error {
 	sitem := entity.SchemaUser(item)
+	sitem.Created = uint64(time.Now().UnixNano())
 	db := entity.GetUserDB(ctx, a.DB)
 	result := db.Create(sitem.ToUser())
 	return errors.WithStack(result.Error)

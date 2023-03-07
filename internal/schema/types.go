@@ -7,3 +7,10 @@ const (
 	ACTIVE
 	CLOSED
 )
+
+type Role int
+
+const (
+	AdminUser Role = iota
+	LocalUser
+)
