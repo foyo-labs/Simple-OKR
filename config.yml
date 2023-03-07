@@ -1,3 +1,9 @@
+profile: debug
+log:
+  level: 5
+  format: "text"
+  output: "stdout"
+  file: "./log/okr.log"
 http:
   port: ":8080"
 postgres:

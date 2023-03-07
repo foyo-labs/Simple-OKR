@@ -15,3 +15,8 @@ func InitObjectiveAPI(db *gorm.DB) api.ObjectivesAPI {
 	wire.Build(repository.NewObjectiveRepository, service.NewObjectiveService, api.NewObjectivesAPI)
 	return api.ObjectivesAPI{}
 }
+
+func InitUserAPI(db *gorm.DB) api.UserAPI {
+	wire.Build(repository.NewUserRepository, service.NewUserService, api.NewUserAPI)
+	return api.UserAPI{}
+}

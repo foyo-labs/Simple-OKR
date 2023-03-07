@@ -8,6 +8,6 @@
 
 <section>
 	<h1>
-		Hello.
+		Objective.
 	</h1>
 </section>

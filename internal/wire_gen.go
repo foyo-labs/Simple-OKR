@@ -20,3 +20,10 @@ func InitObjectiveAPI(db *gorm.DB) api.ObjectivesAPI {
 	objectivesAPI := api.NewObjectivesAPI(iObjectiveService)
 	return objectivesAPI
 }
+
+func InitUserAPI(db *gorm.DB) api.UserAPI {
+	iUserRepository := repository.NewUserRepository(db)
+	iUserService := service.NewUserService(iUserRepository)
+	userAPI := api.NewUserAPI(iUserService)
+	return userAPI
+}

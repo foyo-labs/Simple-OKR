@@ -16,12 +16,12 @@ import (
 var content embed.FS
 
 func main() {
-	config, configErr := config.LoadConfig()
+	configErr := config.LoadConfig()
 	if configErr != nil {
 		log.Fatal("Error while loading config file: ", configErr)
 	}
 
-	database, databaseError := db.ConnectDatabase(config)
+	database, databaseError := db.ConnectDatabase(*config.C)
 
 	if databaseError != nil {
 		log.Fatal("Error while connecting to database: ", databaseError)
@@ -37,14 +37,19 @@ func main() {
 	}))
 
 	objectiveAPI := app.InitObjectiveAPI(database)
+	userAPI := app.InitUserAPI(database)
 
 	api := r.Group("/api")
 	objectives := api.Group("/objectives")
+	users := api.Group("/users")
 
 	// Objectives
 	objectives.GET("", objectiveAPI.GetAll)
 
-	err := r.Run(config.Http.Port)
+	// Users
+	users.POST("/login", userAPI.Login)
+
+	err := r.Run(config.C.Http.Port)
 	if err != nil {
 		panic(err)
 	}
