@@ -14,3 +14,10 @@ const (
 	AdminUser Role = iota
 	LocalUser
 )
+
+type ObjectiveStatus int
+
+const (
+	ObjectiveActived ObjectiveStatus = iota + 1
+	ObjectiveDisabled
+)

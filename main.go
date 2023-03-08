@@ -47,7 +47,7 @@ func main() {
 	groups := api.Group("/groups")
 
 	// Objectives
-	objectives.GET("", objectiveAPI.GetAll)
+	objectives.POST("", objectiveAPI.Create)
 
 	// KeyResults
 	objectives.GET("/:objectiveID/keyresults", nil)

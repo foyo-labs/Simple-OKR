@@ -12,7 +12,7 @@ import (
 )
 
 func InitObjectiveAPI(db *gorm.DB) api.ObjectivesAPI {
-	wire.Build(repository.NewObjectiveRepository, service.NewObjectiveService, api.NewObjectivesAPI)
+	wire.Build(repository.NewObjectiveRepository, repository.NewKeyResultRepository, service.NewObjectiveService, repository.NewTrans, api.NewObjectivesAPI)
 	return api.ObjectivesAPI{}
 }
 
