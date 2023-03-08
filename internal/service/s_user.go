@@ -12,8 +12,10 @@ import (
 )
 
 type userService struct {
-	IUserRepository repository.IUserRepository
-	Trans           repository.Trans
+	IUserRepository      repository.IUserRepository
+	IGroupRepository     repository.IGroupRepository
+	IUserGroupRepository repository.IUserGroupRepository
+	Trans                repository.Trans
 }
 
 type IUserService interface {
@@ -22,8 +24,18 @@ type IUserService interface {
 	GenerateToken(ctx context.Context, userID string) (*schema.LoginTokenInfo, error)
 }
 
-func NewUserService(userRepository repository.IUserRepository, trans repository.Trans) IUserService {
-	return &userService{IUserRepository: userRepository, Trans: trans}
+func NewUserService(
+	userRepository repository.IUserRepository,
+	userGroupRepo repository.IUserGroupRepository,
+	groupRepo repository.IGroupRepository,
+	trans repository.Trans,
+) IUserService {
+	return &userService{
+		IUserRepository:      userRepository,
+		IGroupRepository:     groupRepo,
+		IUserGroupRepository: userGroupRepo,
+		Trans:                trans,
+	}
 }
 
 func (a *userService) GenerateToken(ctx context.Context, userID string) (*schema.LoginTokenInfo, error) {
@@ -32,9 +44,18 @@ func (a *userService) GenerateToken(ctx context.Context, userID string) (*schema
 		return nil, errors.WithStack(err)
 	}
 
+	group, err := a.IGroupRepository.QueryUserGroup(ctx, userID)
+	if err != nil {
+		return nil, errors.WithStack(err)
+	}
+
 	item := &schema.LoginTokenInfo{
 		AccessToken: token,
 		UserID:      userID,
+		UserInfo: schema.UserInfo{
+			GroupID:   group.ID,
+			GroupName: group.Name,
+		},
 	}
 	return item, nil
 }

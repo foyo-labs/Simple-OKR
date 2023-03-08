@@ -17,16 +17,20 @@ import (
 func InitObjectiveAPI(db *gorm.DB) api.ObjectivesAPI {
 	iObjectiveRepository := repository.NewObjectiveRepository(db)
 	iKeyResultRepository := repository.NewKeyResultRepository(db)
+	iGroupObjectiveRepository := repository.NewGroupObjectiveRepository(db)
+	iUserObjectiveRepository := repository.NewUserObjectiveRepository(db)
 	trans := repository.NewTrans(db)
-	iObjectiveService := service.NewObjectiveService(iObjectiveRepository, iKeyResultRepository, trans)
+	iObjectiveService := service.NewObjectiveService(iObjectiveRepository, iKeyResultRepository, iGroupObjectiveRepository, iUserObjectiveRepository, trans)
 	objectivesAPI := api.NewObjectivesAPI(iObjectiveService)
 	return objectivesAPI
 }
 
 func InitUserAPI(db *gorm.DB) api.UserAPI {
 	iUserRepository := repository.NewUserRepository(db)
+	iUserGroupRepository := repository.NewUserGroupRepository(db)
+	iGroupRepository := repository.NewGroupRepository(db)
 	trans := repository.NewTrans(db)
-	iUserService := service.NewUserService(iUserRepository, trans)
+	iUserService := service.NewUserService(iUserRepository, iUserGroupRepository, iGroupRepository, trans)
 	userAPI := api.NewUserAPI(iUserService)
 	return userAPI
 }

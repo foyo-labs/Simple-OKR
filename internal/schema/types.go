@@ -21,3 +21,10 @@ const (
 	ObjectiveActived ObjectiveStatus = iota + 1
 	ObjectiveDisabled
 )
+
+type ObjectiveType int
+
+const (
+	GroupObjectiveType ObjectiveType = iota + 1
+	UserObjectiveType
+)

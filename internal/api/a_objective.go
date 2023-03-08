@@ -35,10 +35,12 @@ func (a *ObjectivesAPI) Create(c *gin.Context) {
 
 	userID := ginx.GetUserID(c)
 	objective := &schema.Objective{
-		UserID:     userID,
-		Name:       request.Name,
-		ParentID:   request.ParentID,
-		KeyResults: keyResults,
+		UserID:        userID,
+		Name:          request.Name,
+		ParentID:      request.ParentID,
+		KeyResults:    keyResults,
+		ObjectiveType: request.ObjectiveType,
+		GroupID:       request.GroupID,
 	}
 
 	result, err := a.IObjectiveService.Create(ctx, *objective)

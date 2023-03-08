@@ -27,5 +27,5 @@ type UserQueryResult struct {
 type ReqestRegistion struct {
 	Email        string `json:"email"`
 	Password     string `json:"password"`
-	DepartmentID string `json:"department_id"` //用于某个用户开通当前企业用户，只有角色为Admin的有权限
+	DepartmentID string `json:"department_id"` //用于某个用户开通当前团队用户，只有角色为Admin的有权限
 }

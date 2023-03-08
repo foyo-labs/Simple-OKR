@@ -21,6 +21,7 @@ func (a *GroupAPI) GetAll(c *gin.Context) {
 	c.JSON(http.StatusOK, "Ok")
 }
 
+// Create 创建组数据
 func (a *GroupAPI) Create(c *gin.Context) {
 	ctx := c.Request.Context()
 	var item schema.CreateGroupRequest

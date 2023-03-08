@@ -14,6 +14,7 @@ import (
 type IGroupRepository interface {
 	Create(ctx context.Context, group schema.Group) error
 	Get(ctx context.Context, id string) (*schema.Group, error)
+	QueryUserGroup(ctx context.Context, userID string) (*schema.Group, error)
 }
 
 type GroupRepository struct {
@@ -44,4 +45,21 @@ func (a *GroupRepository) Get(ctx context.Context, id string) (*schema.Group, er
 	}
 	logger.Infof("found group: %s", item.ID)
 	return item.ToSchemaGroup(), nil
+}
+
+func (a *GroupRepository) QueryUserGroup(ctx context.Context, userID string) (*schema.Group, error) {
+	var items []entity.Group
+	db := entity.GetGroupDB(ctx, a.DB)
+	db = db.Joins("JOIN user_groups ON user_groups.group_id = groups.id WHERE user_groups.user_id = ?", userID)
+	result := db.Find(&items)
+	if result.Error != nil {
+		return nil, errors.WithStack(result.Error)
+	}
+	if len(items) > 0 {
+		return items[0].ToSchemaGroup(), nil
+	}
+	return &schema.Group{
+		ID:   "",
+		Name: "",
+	}, nil
 }

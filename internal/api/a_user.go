@@ -35,7 +35,7 @@ func (a *UserAPI) Login(c *gin.Context) {
 	}
 
 	ginx.SetUserID(c, result.ID)
-	tokenInfo, err := a.IUserService.GenerateToken(ctx, result.ID)
+	tokenInfo, err := a.IUserService.GenerateToken(ctx, ginx.GetUserID(c))
 	if err != nil {
 		ginx.ResError(c, err)
 		return

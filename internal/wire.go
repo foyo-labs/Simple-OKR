@@ -12,12 +12,27 @@ import (
 )
 
 func InitObjectiveAPI(db *gorm.DB) api.ObjectivesAPI {
-	wire.Build(repository.NewObjectiveRepository, repository.NewKeyResultRepository, service.NewObjectiveService, repository.NewTrans, api.NewObjectivesAPI)
+	wire.Build(
+		repository.NewObjectiveRepository,
+		repository.NewKeyResultRepository,
+		repository.NewGroupObjectiveRepository,
+		repository.NewUserObjectiveRepository,
+		repository.NewTrans,
+		service.NewObjectiveService,
+		api.NewObjectivesAPI,
+	)
 	return api.ObjectivesAPI{}
 }
 
 func InitUserAPI(db *gorm.DB) api.UserAPI {
-	wire.Build(repository.NewUserRepository, repository.NewTrans, service.NewUserService, api.NewUserAPI)
+	wire.Build(
+		repository.NewUserRepository,
+		repository.NewUserGroupRepository,
+		repository.NewGroupRepository,
+		repository.NewTrans,
+		service.NewUserService,
+		api.NewUserAPI,
+	)
 	return api.UserAPI{}
 }
 

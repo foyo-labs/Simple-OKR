@@ -12,6 +12,7 @@ import (
 
 type IObjectiveRepository interface {
 	Add(ctx context.Context, item schema.Objective) error
+	Update(ctx context.Context, item schema.Objective) error
 }
 
 type ObjectiveRepository struct {
@@ -31,5 +32,12 @@ func (a *ObjectiveRepository) Add(ctx context.Context, objective schema.Objectiv
 	sitem := entity.SchemaObjective(objective)
 	db := entity.GetObjectiveDB(ctx, a.DB)
 	result := db.Create(sitem.ToObjective())
+	return errors.WithStack(result.Error)
+}
+
+func (a *ObjectiveRepository) Update(ctx context.Context, objective schema.Objective) error {
+	objective.Updated = uint64(time.Now().UnixNano())
+	eitem := entity.SchemaObjective(objective).ToObjective()
+	result := entity.GetObjectiveDB(ctx, a.DB).Where("id=?", objective.ID).Updates(eitem)
 	return errors.WithStack(result.Error)
 }
