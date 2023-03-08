@@ -34,7 +34,7 @@ func (a *UserGroupRepository) Create(ctx context.Context, item schema.UserGroup)
 
 func (a *UserGroupRepository) Update(ctx context.Context, item schema.UserGroup) error {
 	sitem := entity.SchemaUserGroup(item)
-	db := entity.GetGroupDB(ctx, a.DB)
+	db := entity.GetUserGroupDB(ctx, a.DB)
 	result := db.Where("user_id=?", item.UserID).Updates(sitem)
 	return errors.WithStack(result.Error)
 }

@@ -17,8 +17,23 @@ func NewGroupAPI(groupService service.IGroupService) GroupAPI {
 	return GroupAPI{IGroupService: groupService}
 }
 
-func (a *GroupAPI) GetAll(c *gin.Context) {
-	c.JSON(http.StatusOK, "Ok")
+func (a *GroupAPI) ListChilds(c *gin.Context) {
+	ctx := c.Request.Context()
+	level_num := c.Query("ln")
+	if level_num == "" {
+		level_num = "0"
+	}
+	parent := c.Query("parent")
+	query := schema.GroupQueryParam{
+		LevelNum: level_num,
+		ParentID: parent,
+	}
+	result, err := a.IGroupService.ListChilds(ctx, query)
+	if err != nil {
+		ginx.ResError(c, err)
+		return
+	}
+	c.JSON(http.StatusOK, result)
 }
 
 // Create 创建组数据

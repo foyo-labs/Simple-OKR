@@ -31,7 +31,8 @@ func InitUserAPI(db *gorm.DB) api.UserAPI {
 	iGroupRepository := repository.NewGroupRepository(db)
 	trans := repository.NewTrans(db)
 	iUserService := service.NewUserService(iUserRepository, iUserGroupRepository, iGroupRepository, trans)
-	userAPI := api.NewUserAPI(iUserService)
+	iGroupService := service.NewGroupService(iGroupRepository, iUserGroupRepository, trans)
+	userAPI := api.NewUserAPI(iUserService, iGroupService)
 	return userAPI
 }
 

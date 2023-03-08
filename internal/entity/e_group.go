@@ -36,6 +36,16 @@ func (a SchemaGroup) ToGroup() *Group {
 	return item
 }
 
+type Groups []*Group
+
+func (a Groups) ToSchemaGroups() []*schema.Group {
+	list := make([]*schema.Group, len(a))
+	for i, item := range a {
+		list[i] = item.ToSchemaGroup()
+	}
+	return list
+}
+
 func GetUserGroupDB(ctx context.Context, defDB *gorm.DB) *gorm.DB {
 	return GetDBWithModel(ctx, defDB, new(UserGroup))
 }

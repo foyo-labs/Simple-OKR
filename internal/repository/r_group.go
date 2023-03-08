@@ -6,7 +6,6 @@ import (
 
 	"github.com/laidingqing/sokr/internal/entity"
 	"github.com/laidingqing/sokr/internal/schema"
-	"github.com/laidingqing/sokr/pkg/logger"
 	"github.com/pkg/errors"
 	"gorm.io/gorm"
 )
@@ -15,6 +14,7 @@ type IGroupRepository interface {
 	Create(ctx context.Context, group schema.Group) error
 	Get(ctx context.Context, id string) (*schema.Group, error)
 	QueryUserGroup(ctx context.Context, userID string) (*schema.Group, error)
+	ListChilds(ctx context.Context, query schema.GroupQueryParam) ([]*schema.Group, error)
 }
 
 type GroupRepository struct {
@@ -43,8 +43,25 @@ func (a *GroupRepository) Get(ctx context.Context, id string) (*schema.Group, er
 	if result.Error != nil {
 		return nil, errors.WithStack(result.Error)
 	}
-	logger.Infof("found group: %s", item.ID)
+	// logger.Infof("found group: %s", item.ID)
 	return item.ToSchemaGroup(), nil
+}
+
+func (a *GroupRepository) ListChilds(ctx context.Context, query schema.GroupQueryParam) ([]*schema.Group, error) {
+	var items entity.Groups
+	db := entity.GetGroupDB(ctx, a.DB)
+	if v := query.LevelNum; v != "" {
+		db = db.Where("level_num ~ ?", v)
+	}
+	if v := query.ParentID; v != "" {
+		db = db.Where("parent_id = ?", query.ParentID)
+	}
+
+	result := db.Find(&items)
+	if result.Error != nil {
+		return nil, errors.WithStack(result.Error)
+	}
+	return items.ToSchemaGroups(), nil
 }
 
 func (a *GroupRepository) QueryUserGroup(ctx context.Context, userID string) (*schema.Group, error) {

@@ -21,3 +21,13 @@ type CreateGroupRequest struct {
 	Name     string `json:"name"`
 	UserID   string `json:"user_id"`
 }
+
+type GroupQueryParam struct {
+	ParentID string
+	LevelNum string
+}
+
+type UpdateUserGroup struct {
+	UserID  string `json:"user_id"`
+	GroupID string `json:"group_id"`
+}

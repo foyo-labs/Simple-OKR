@@ -18,6 +18,8 @@ type groupService struct {
 
 type IGroupService interface {
 	Create(ctx context.Context, group schema.Group) (*schema.IDResult, error)
+	ListChilds(ctx context.Context, query schema.GroupQueryParam) ([]*schema.Group, error)
+	UpdateUserGroup(ctx context.Context, request schema.UpdateUserGroup) error
 }
 
 func NewGroupService(
@@ -26,6 +28,10 @@ func NewGroupService(
 	trans repository.Trans,
 ) IGroupService {
 	return &groupService{IGroupRepository: groupRepository, IUserGroupRepository: userGroupRepository, Trans: trans}
+}
+
+func (a *groupService) ListChilds(ctx context.Context, query schema.GroupQueryParam) ([]*schema.Group, error) {
+	return a.IGroupRepository.ListChilds(ctx, query)
 }
 
 func (a *groupService) Create(ctx context.Context, item schema.Group) (*schema.IDResult, error) {
@@ -72,4 +78,14 @@ func (a *groupService) Create(ctx context.Context, item schema.Group) (*schema.I
 	}
 
 	return schema.NewIDResult(item.ID), nil
+}
+
+// UpdateUserGroup 更新用户分组
+func (a *groupService) UpdateUserGroup(ctx context.Context, request schema.UpdateUserGroup) error {
+	userGroup := &schema.UserGroup{
+		UserID:  request.UserID,
+		GroupID: request.GroupID,
+	}
+	return a.IUserGroupRepository.Update(ctx, *userGroup)
+
 }

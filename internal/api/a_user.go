@@ -12,11 +12,18 @@ import (
 )
 
 type UserAPI struct {
-	IUserService service.IUserService
+	IUserService  service.IUserService
+	IGroupService service.IGroupService
 }
 
-func NewUserAPI(userService service.IUserService) UserAPI {
-	return UserAPI{IUserService: userService}
+func NewUserAPI(
+	userService service.IUserService,
+	groupService service.IGroupService,
+) UserAPI {
+	return UserAPI{
+		IUserService:  userService,
+		IGroupService: groupService,
+	}
 }
 
 func (a *UserAPI) Login(c *gin.Context) {
@@ -67,4 +74,20 @@ func (a *UserAPI) Create(c *gin.Context) {
 	}
 
 	ginx.ResSuccess(c, result)
+}
+
+func (a *UserAPI) UpdateGroup(c *gin.Context) {
+	ctx := c.Request.Context()
+	var item schema.UpdateUserGroup
+	if err := ginx.ParseJSON(c, &item); err != nil {
+		ginx.ResError(c, err)
+		return
+	}
+	err := a.IGroupService.UpdateUserGroup(ctx, item)
+	if err != nil {
+		logger.Errorf("%v", err)
+		ginx.ResError(c, err)
+		return
+	}
+	ginx.ResSuccess(c, "Ok")
 }

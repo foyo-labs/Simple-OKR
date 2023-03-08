@@ -56,9 +56,11 @@ func main() {
 	// Users
 	users.POST("/login", userAPI.Login)
 	users.POST("/registion", userAPI.Create)
+	users.PUT("/groups", userAPI.UpdateGroup)
 
 	// Units: Company & Department
 	groups.POST("/", groupAPI.Create)
+	groups.GET("", groupAPI.ListChilds)
 
 	// r.StaticFS("/", http.FS(content))
 	err := r.Run(config.C.Http.Port)

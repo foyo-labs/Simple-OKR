@@ -31,6 +31,7 @@ func InitUserAPI(db *gorm.DB) api.UserAPI {
 		repository.NewGroupRepository,
 		repository.NewTrans,
 		service.NewUserService,
+		service.NewGroupService,
 		api.NewUserAPI,
 	)
 	return api.UserAPI{}
