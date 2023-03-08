@@ -21,7 +21,7 @@ func InitUserAPI(db *gorm.DB) api.UserAPI {
 	return api.UserAPI{}
 }
 
-func InitUnitAPI(db *gorm.DB) api.UnitAPI {
-	wire.Build(repository.NewCompanyRepository, repository.NewTrans, service.NewUnitService, api.NewUnitAPI)
-	return api.UnitAPI{}
+func InitGroupAPI(db *gorm.DB) api.GroupAPI {
+	wire.Build(repository.NewGroupRepository, repository.NewUserGroupRepository, repository.NewTrans, service.NewGroupService, api.NewGroupAPI)
+	return api.GroupAPI{}
 }

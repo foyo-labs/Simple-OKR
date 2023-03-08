@@ -38,23 +38,29 @@ func main() {
 
 	objectiveAPI := app.InitObjectiveAPI(database)
 	userAPI := app.InitUserAPI(database)
-	unitAPI := app.InitUnitAPI(database)
+	groupAPI := app.InitGroupAPI(database)
 
 	api := r.Group("/api")
 	objectives := api.Group("/objectives")
+
 	users := api.Group("/users")
-	units := api.Group("/units")
+	groups := api.Group("/groups")
 
 	// Objectives
 	objectives.GET("", objectiveAPI.GetAll)
+
+	// KeyResults
+	objectives.GET("/:objectiveID/keyresults", nil)
+	objectives.GET("/:objectiveID/keyresults/:keyResultId", nil)
 
 	// Users
 	users.POST("/login", userAPI.Login)
 	users.POST("/registion", userAPI.Create)
 
 	// Units: Company & Department
-	units.POST("/companies", unitAPI.CreateCompany)
+	groups.POST("/", groupAPI.Create)
 
+	// r.StaticFS("/", http.FS(content))
 	err := r.Run(config.C.Http.Port)
 	if err != nil {
 		panic(err)

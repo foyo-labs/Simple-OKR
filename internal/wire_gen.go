@@ -29,10 +29,11 @@ func InitUserAPI(db *gorm.DB) api.UserAPI {
 	return userAPI
 }
 
-func InitUnitAPI(db *gorm.DB) api.UnitAPI {
-	iCompanyRepository := repository.NewCompanyRepository(db)
+func InitGroupAPI(db *gorm.DB) api.GroupAPI {
+	iGroupRepository := repository.NewGroupRepository(db)
+	iUserGroupRepository := repository.NewUserGroupRepository(db)
 	trans := repository.NewTrans(db)
-	iUnitService := service.NewUnitService(iCompanyRepository, trans)
-	unitAPI := api.NewUnitAPI(iUnitService)
-	return unitAPI
+	iGroupService := service.NewGroupService(iGroupRepository, iUserGroupRepository, trans)
+	groupAPI := api.NewGroupAPI(iGroupService)
+	return groupAPI
 }

@@ -14,6 +14,8 @@ func ConnectDatabase(cfg config.Config) (*gorm.DB, error) {
 
 	db.AutoMigrate(
 		new(entity.User),
+		new(entity.Group),
+		new(entity.UserGroup),
 	)
 
 	return db, dbErr
