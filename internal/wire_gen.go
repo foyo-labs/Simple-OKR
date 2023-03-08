@@ -44,3 +44,11 @@ func InitGroupAPI(db *gorm.DB) api.GroupAPI {
 	groupAPI := api.NewGroupAPI(iGroupService)
 	return groupAPI
 }
+
+func InitCycleAPI(db *gorm.DB) api.CycleAPI {
+	iCycleRepository := repository.NewCycleRepository(db)
+	trans := repository.NewTrans(db)
+	iCycleService := service.NewCycleService(iCycleRepository, trans)
+	cycleAPI := api.NewCycleAPI(iCycleService)
+	return cycleAPI
+}

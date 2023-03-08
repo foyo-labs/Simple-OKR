@@ -39,12 +39,14 @@ func main() {
 	objectiveAPI := app.InitObjectiveAPI(database)
 	userAPI := app.InitUserAPI(database)
 	groupAPI := app.InitGroupAPI(database)
+	cycleAPI := app.InitCycleAPI(database)
 
 	api := r.Group("/api")
 	objectives := api.Group("/objectives")
 
 	users := api.Group("/users")
 	groups := api.Group("/groups")
+	cycles := api.Group("/cycles")
 
 	// Objectives
 	objectives.POST("", objectiveAPI.Create)
@@ -61,6 +63,8 @@ func main() {
 	// Units: Company & Department
 	groups.POST("/", groupAPI.Create)
 	groups.GET("", groupAPI.ListChilds)
+
+	cycles.POST("", cycleAPI.Create)
 
 	// r.StaticFS("/", http.FS(content))
 	err := r.Run(config.C.Http.Port)

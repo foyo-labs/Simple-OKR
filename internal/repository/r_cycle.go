@@ -1,26 +1,32 @@
 package repository
 
 import (
+	"context"
+
 	"github.com/laidingqing/sokr/internal/entity"
+	"github.com/laidingqing/sokr/internal/schema"
+	"github.com/pkg/errors"
 	"gorm.io/gorm"
 )
 
 type ICycleRepository interface {
-	Add(cycle entity.Cycle) error
+	Add(ctx context.Context, item schema.Cycle) error
 }
 
 type CycleRepository struct {
-	DbConn *gorm.DB
+	DB *gorm.DB
 }
 
 var _ ICycleRepository = &CycleRepository{}
 
 func NewCycleRepository(dbConn *gorm.DB) ICycleRepository {
-	companyRep := CycleRepository{DbConn: dbConn}
+	companyRep := CycleRepository{DB: dbConn}
 	return &companyRep
 }
 
-func (rep *CycleRepository) Add(cycle entity.Cycle) error {
-
-	return nil
+func (a *CycleRepository) Add(ctx context.Context, item schema.Cycle) error {
+	sitem := entity.SchemaCycle(item)
+	db := entity.GetCycleDB(ctx, a.DB)
+	result := db.Create(sitem.ToCycle())
+	return errors.WithStack(result.Error)
 }

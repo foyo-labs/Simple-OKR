@@ -41,3 +41,13 @@ func InitGroupAPI(db *gorm.DB) api.GroupAPI {
 	wire.Build(repository.NewGroupRepository, repository.NewUserGroupRepository, repository.NewTrans, service.NewGroupService, api.NewGroupAPI)
 	return api.GroupAPI{}
 }
+
+func InitCycleAPI(db *gorm.DB) api.CycleAPI {
+	wire.Build(
+		repository.NewCycleRepository,
+		repository.NewTrans,
+		service.NewCycleService,
+		api.NewCycleAPI,
+	)
+	return api.CycleAPI{}
+}

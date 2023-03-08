@@ -20,6 +20,7 @@ func ConnectDatabase(cfg config.Config) (*gorm.DB, error) {
 		new(entity.KeyResult),
 		new(entity.UserObjective),
 		new(entity.GroupObjective),
+		new(entity.Cycle),
 	)
 
 	return db, dbErr
