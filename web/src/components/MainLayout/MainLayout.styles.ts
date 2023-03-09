@@ -1,36 +1,25 @@
 import styled from "styled-components";
-import banner from "@/static/images/loginImg/bg.png";
-let path = require(`@/static/images/loginImg/bg.png`);
-
-
-export const BigLay = {
-
-}
-export const headerStyle = {
-    display: 'flex',
-    background: '#FFFFFF',
-}
 
 export const Logo = styled.div`
 width:160px ;
 height:30px ;
+color: #fff;
 `;
 
-
-
-export const LayoutStyle = {
-    // background: '#D7DCF7',
-    height: 'calc(100vh - 64px)',
-    background: 'linear-gradient(to right, #C2C1FB, #ABEFF3)',
-    // backgroundImage: 'url(' + '../../static/images/loginImg/bg.png' + ')',
-    // backgroundImage: 'url(' + '../../static/images/loginImg/bg.png' + ')',
-    // backgroundImage: "url(" + require('../../static/images/loginImg/bg.png') + ")",
-
+export const MainNavStyle = {
+    width: '100%',
+    display: 'flex',
+    alignitems: 'center',
+    zindex: '1',
+    gridgap: '28px',
+    gap: '28px'
 }
 
-export const MenuStyle = {
-    color: '#333333',
-    backgroundColor: 'transparent',
-
+export const MainNavLinkStyle = {
+    marginleft: '20px',
+    textdecoration: 'none',
+    transition: 'color .2s ease',
+    fontsize: '14px',
+    fontweight: '500',
+    color: '#ffffff'
 }
-

@@ -11,10 +11,9 @@ import { IFormLogin } from "@/types/shared";
 import { AnyAction, bindActionCreators, Dispatch } from "redux";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { userAction } from "../../redux/usersSlice";
-// redux\usersSaga.ts
-import { Alert, Button, Form as AntdForm, Input } from "antd";
+import { Form as AntdForm } from "antd";
+import { Form, Input, Button, Alert } from 'antd';
 import { LoginFormSchema } from "@/utils/validation";
-import { Container, Test, Title, Welcome } from "./login-form.style";
 import moment from "moment";
 
 const getErrorsMessages = (errors: FieldErrors<FormData>) => {
@@ -30,34 +29,18 @@ function LoginForm(props: any, context: any) {
   const methods = useForm<IFormLogin>({
     resolver: LoginFormSchema,
     defaultValues: {
-      userName: "",
+      email: "",
       password: "",
     },
   });
 
   const onSubmit: SubmitHandler<IFormLogin> = async (data: IFormLogin) => {
+    console.log(data, "====")
     await dispatch(userAction.loginRequest(data));
   };
 
-  //判断是否在登录状态
-  const checkInLogin = () => {
-    let session = global.localStorage;
-    let expire_at = session.getItem("expire_at");
-    if (
-      session !== undefined &&
-      session.getItem("token") !== undefined &&
-      session.getItem("userName") !== undefined
-    ) {
-      if (expire_at) {
-        if (moment().format("X") <= expire_at) {
-          return true;
-        } else {
-          return false;
-        }
-      }
-    } else {
-      return false;
-    }
+  const onFinishFailed = (errorInfo: any) => {
+    alert(errorInfo);
   };
 
   useEffect(() => {
@@ -68,69 +51,50 @@ function LoginForm(props: any, context: any) {
     }
   });
 
-  const onFinishFailed = (errorInfo: any) => {
-    alert(errorInfo);
-  };
-
   const errorsMessages = getErrorsMessages(methods.formState.errors);
   return (
-    <Container>
-      <Title>登录</Title>
-      <Welcome>您好！欢迎来到胜利达对账管理系统</Welcome>
-      {/* <FormProvider {...methods}> */}
-      <AntdForm
-        name="basic"
-        onFinish={methods.handleSubmit(onSubmit)}
-        onFinishFailed={onFinishFailed}
-        autoComplete="off"
-      >
-        <Test>
-          <Controller
-            control={methods.control}
-            name="userName"
-            render={({ field }) => (
-              <Input className="ipt style-margin" {...field} />
-            )}
-          />
-        </Test>
-        <Test>
-          <Controller
-            control={methods.control}
-            name="password"
-            render={({ field }) => (
-              <Input.Password
-                className="ipt"
-                {...field}
-                onChange={(e) => {
-                  field.onChange(e.target.value);
-                }}
-              />
-            )}
-          />{" "}
-          <div className="pw">记住密码</div>
-        </Test>
+    <AntdForm
+      name="basic"
+      layout="vertical"
+      onFinish={methods.handleSubmit(onSubmit)}
+      onFinishFailed={onFinishFailed}
+      autoComplete="off"
+    >
+      {errorsMessages.map((error) => (
+        <Alert
+          className="ale"
+          key={error}
+          message={error}
+          type="error"
+          showIcon
+        />
+      ))}
+      <Controller
+        control={methods.control}
+        name="email"
+        render={({ field }) => (
+          <Form.Item label="登录邮箱">
+            <Input {...field} />
+          </Form.Item>
+        )}
+      />
 
-        {/* <Btn  type="submit">登录</Btn> */}
-        <Test>
-          {errorsMessages.map((error) => (
-            <Alert
-              className="ale"
-              key={error}
-              message={error}
-              type="error"
-              showIcon
-            />
-          ))}
-        </Test>
-        <Test>
-          <Button htmlType="submit" type="primary" block className="btn">
-            登录
-          </Button>
-        </Test>
-      </AntdForm>
+      <Controller
+        control={methods.control}
+        name="password"
+        render={({ field }) => (
+          <Form.Item label="登录密码">
+            <Input type="password" {...field} />
+          </Form.Item>
+        )}
+      />
 
-      {/* </FormProvider> */}
-    </Container>
+      <Form.Item>
+        <Button type="primary" htmlType="submit">
+          登 录
+        </Button>
+      </Form.Item>
+    </AntdForm>
   );
 }
 const mapStateToProps = (state: { users: any; isLogin: boolean }) => {

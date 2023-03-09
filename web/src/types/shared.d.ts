@@ -4,12 +4,17 @@ export type NextPageWithLayout = NextPage & {
 
 
 interface UserInfo{
-  username: string | null;
+  email: string | null;
   id: string | null;
   token: string | null;
 }
 
 export interface IFormLogin {
-  userName: string;
+  email: string;
   password: string;
+}
+
+
+interface Objective {
+  name: string | null
 }

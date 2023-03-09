@@ -8,24 +8,20 @@ import getConfig from 'next/config'
 const { apiUrl } = getConfig().publicRuntimeConfig
 
 export function* logIn(action: any) {
-
   // yield put(userAction.logInSuccess(null));
 }
 
 export function* watchLogin() {
   yield takeEvery(userAction.loginRequest.type, function* (): any {
-
-    const url = "http://192.168.0.134:10088/api/v1/user/login"
+    const url = apiUrl + "/users/login"
     try {
       const userInfo = yield select(state => state.users.auth);
       const res = yield call(axios.post, url, {
         ...userInfo
       });
       if (res && res.status && res.status == 200) {
-        // 登录成功
         yield put(userAction.logInSuccess(res))
       } else {
-        // 登录失败
         yield put(userAction.logInFail())
       }
     } catch (errors) {
