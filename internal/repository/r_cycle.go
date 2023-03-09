@@ -11,6 +11,7 @@ import (
 
 type ICycleRepository interface {
 	Add(ctx context.Context, item schema.Cycle) error
+	Find(ctx context.Context, query schema.CycleQueryParam) ([]*schema.Cycle, error)
 }
 
 type CycleRepository struct {
@@ -29,4 +30,14 @@ func (a *CycleRepository) Add(ctx context.Context, item schema.Cycle) error {
 	db := entity.GetCycleDB(ctx, a.DB)
 	result := db.Create(sitem.ToCycle())
 	return errors.WithStack(result.Error)
+}
+
+func (a *CycleRepository) Find(ctx context.Context, param schema.CycleQueryParam) ([]*schema.Cycle, error) {
+	var items entity.Cycles
+	db := entity.GetCycleDB(ctx, a.DB)
+	result := db.Where("id=?", param.ID).Find(&items)
+	if result.Error != nil {
+		return nil, errors.WithStack(result.Error)
+	}
+	return items.ToSchemaCycles(), nil
 }

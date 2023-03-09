@@ -25,6 +25,7 @@ type CreateGroupRequest struct {
 type GroupQueryParam struct {
 	ParentID string
 	LevelNum string
+	ID       string
 }
 
 type UpdateUserGroup struct {

@@ -19,8 +19,9 @@ func InitObjectiveAPI(db *gorm.DB) api.ObjectivesAPI {
 	iKeyResultRepository := repository.NewKeyResultRepository(db)
 	iGroupObjectiveRepository := repository.NewGroupObjectiveRepository(db)
 	iUserObjectiveRepository := repository.NewUserObjectiveRepository(db)
+	iCycleRepository := repository.NewCycleRepository(db)
 	trans := repository.NewTrans(db)
-	iObjectiveService := service.NewObjectiveService(iObjectiveRepository, iKeyResultRepository, iGroupObjectiveRepository, iUserObjectiveRepository, trans)
+	iObjectiveService := service.NewObjectiveService(iObjectiveRepository, iKeyResultRepository, iGroupObjectiveRepository, iUserObjectiveRepository, iCycleRepository, trans)
 	objectivesAPI := api.NewObjectivesAPI(iObjectiveService)
 	return objectivesAPI
 }

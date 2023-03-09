@@ -12,3 +12,8 @@ type CreateCycleRequest struct {
 	StartAt uint64 `json:"start_at"`
 	EndAt   uint64 `json:"end_at"`
 }
+
+type CycleQueryParam struct {
+	ID       string `json:"id"`
+	QueryDay uint64 `json:"q_day"`
+}

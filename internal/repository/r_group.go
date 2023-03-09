@@ -13,6 +13,7 @@ import (
 type IGroupRepository interface {
 	Create(ctx context.Context, group schema.Group) error
 	Get(ctx context.Context, id string) (*schema.Group, error)
+	Find(ctx context.Context, param schema.GroupQueryParam) ([]*schema.Group, error)
 	QueryUserGroup(ctx context.Context, userID string) (*schema.Group, error)
 	ListChilds(ctx context.Context, query schema.GroupQueryParam) ([]*schema.Group, error)
 }
@@ -45,6 +46,16 @@ func (a *GroupRepository) Get(ctx context.Context, id string) (*schema.Group, er
 	}
 	// logger.Infof("found group: %s", item.ID)
 	return item.ToSchemaGroup(), nil
+}
+
+func (a *GroupRepository) Find(ctx context.Context, param schema.GroupQueryParam) ([]*schema.Group, error) {
+	var items entity.Groups
+	db := entity.GetGroupDB(ctx, a.DB)
+	result := db.Where("id=?", param.ID).Find(&items)
+	if result.Error != nil {
+		return nil, errors.WithStack(result.Error)
+	}
+	return items.ToSchemaGroups(), nil
 }
 
 func (a *GroupRepository) ListChilds(ctx context.Context, query schema.GroupQueryParam) ([]*schema.Group, error) {

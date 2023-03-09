@@ -65,6 +65,7 @@ func (a *UserAPI) Create(c *gin.Context) {
 	var user schema.User
 	user.Email = item.Email
 	user.Password = item.Password
+	user.GroupID = item.GroupID
 
 	result, err := a.IUserService.Create(ctx, user)
 	if err != nil {

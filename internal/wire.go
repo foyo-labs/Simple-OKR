@@ -17,6 +17,7 @@ func InitObjectiveAPI(db *gorm.DB) api.ObjectivesAPI {
 		repository.NewKeyResultRepository,
 		repository.NewGroupObjectiveRepository,
 		repository.NewUserObjectiveRepository,
+		repository.NewCycleRepository,
 		repository.NewTrans,
 		service.NewObjectiveService,
 		api.NewObjectivesAPI,

@@ -86,18 +86,49 @@ func (a *userService) Create(ctx context.Context, item schema.User) (*schema.IDR
 		return nil, err
 	}
 
+	groupID := ""
+
+	if item.GroupID != "" {
+		group, err := a.checkGroup(ctx, item)
+		if err != nil {
+			return nil, err
+		}
+		groupID = group.ID
+	}
+
 	item.Password = hash.SHA1String(item.Password)
 	item.ID = uuid.NextID()
 	item.Status = 1
+	item.Role = schema.LocalUser
 	err = a.Trans.Exec(ctx, func(ctx context.Context) error {
 		item.ID = uuid.NextID()
-		return a.IUserRepository.Create(ctx, item)
+		err = a.IUserRepository.Create(ctx, item)
+		if err != nil {
+			return err
+		}
+		err = a.IUserGroupRepository.Create(ctx, schema.UserGroup{
+			UserID:  item.ID,
+			GroupID: groupID,
+		})
+		return err
 	})
 	if err != nil {
 		return nil, err
 	}
 
 	return schema.NewIDResult(item.ID), nil
+}
+
+func (a *userService) checkGroup(ctx context.Context, item schema.User) (*schema.Group, error) {
+	result, err := a.IGroupRepository.Find(ctx, schema.GroupQueryParam{
+		ID: item.GroupID,
+	})
+	if err != nil {
+		return nil, err
+	} else if len(result) == 0 {
+		return nil, errors.New400Response("分组不存在")
+	}
+	return result[0], nil
 }
 
 func (a *userService) checkEmail(ctx context.Context, item schema.User) error {

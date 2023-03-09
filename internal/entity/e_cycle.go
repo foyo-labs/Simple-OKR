@@ -34,3 +34,13 @@ func (a SchemaCycle) ToCycle() *Cycle {
 	structure.Copy(a, item)
 	return item
 }
+
+type Cycles []*Cycle
+
+func (a Cycles) ToSchemaCycles() []*schema.Cycle {
+	list := make([]*schema.Cycle, len(a))
+	for i, item := range a {
+		list[i] = item.ToSchemaCycle()
+	}
+	return list
+}

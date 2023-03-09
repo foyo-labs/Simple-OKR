@@ -36,6 +36,7 @@ type ReqestObjective struct {
 	KeyResults    []*ReqestKeyResult `json:"key_results"`
 	ObjectiveType ObjectiveType      `json:"objective_type"`
 	GroupID       string             `json:"group_id"`
+	CycleID       string             `json:"cycle_id"`
 }
 
 type ReqestKeyResult struct {
@@ -54,4 +55,9 @@ type GroupObjective struct {
 	GroupID     string `json:"group_id"`
 	ObjectiveID string `json:"objective_id"`
 	CycleID     string `json:"cycle_id"`
+}
+
+type ObjectiveQueryParam struct {
+	CycleID string `json:"cycle_id"`
+	GroupID string `json:"group_id"`
 }
