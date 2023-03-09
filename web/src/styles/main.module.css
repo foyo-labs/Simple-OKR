@@ -1,0 +1,10 @@
+.main {
+    background-image: url("../static/images/bg.png");
+    background-repeat: round;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 6rem;
+    min-height: 100vh;
+  }
